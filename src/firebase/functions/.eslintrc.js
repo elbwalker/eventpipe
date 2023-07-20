@@ -14,8 +14,11 @@ module.exports = {
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: ["tsconfig.json", "tsconfig.dev.json"],
-    sourceType: "module",
+    "project": ["tsconfig.json", "tsconfig.dev.json"],
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true,
+    },
   },
   ignorePatterns: [
     "/lib/**/*", // Ignore built files.
@@ -28,5 +31,8 @@ module.exports = {
     "quotes": ["error", "double"],
     "import/no-unresolved": 0,
     "indent": ["error", 2],
+    // Set the maximum line length to 120 characters
+    "max-len": ["error", 120],
+    "valid-jsdoc": ["error", {"requireParamType": false, "requireReturnType": false}],
   },
 };
