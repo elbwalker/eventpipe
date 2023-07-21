@@ -41,7 +41,7 @@ npm install
 ### 5. Run locally
 To build and run the code locally, just run from the folder `src/firebase/functions`:
 ```
-npm run serve -- --project YOUR_FIREBASE_PROJECT_NAME
+npm run serve -- --project YOUR_FIREBASE_PROJECT_ID
 ``` 
 
 In the console you will find the enpoint URL, e.g. `http://127.0.0.1:5001/syte-elbwalker-test/europe-west1/handleEvent`. You can then send an event to your local API with:
@@ -52,3 +52,7 @@ You will see some logoutput in your terminal
 
 
 ### 6. Deployment
+```
+firebase deploy --only functions --project YOUR_FIREBASE_PROJECT_ID
+```
+You will find the `Function URL` in the terminal output and you can issue a Request against it as described above.
