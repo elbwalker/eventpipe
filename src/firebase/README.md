@@ -3,7 +3,6 @@ This sections describes how to setup the Elbwalker event pipeline with [Cloud Fu
 
 
 ## Setup
-All commands are meant to be run from this folder (`src/firebase/`).
 
 
 ### 1. Create a Firebase Project
@@ -21,8 +20,6 @@ Assuming you have `nvm` (Node Version Manager) installed, run:
 nvm install 18
 nvm use 18
 npm install -g firebase-tools
-npm install firebase-functions@latest firebase-admin@latest --save
-npm install @google-cloud/bigquery
 ```
 
 For details see the instructions on https://firebase.google.com/docs/functions/get-started?gen=2nd#set-up-your-environment-and-the-firebase-cli for Node.js
@@ -31,15 +28,14 @@ For details see the instructions on https://firebase.google.com/docs/functions/g
 ### 4. Initialize your project
 Firt run `firebase login` to log in via the browser and authenticate the Firebase CLI.
 
-Install project dependencies:
+Install project dependencies by running the following commands from the `src/firebase/functions` folder:
 ```
-cd functions
 npm install
 ```
 
 
 ### 5. Run locally
-To build and run the code locally, just run from the folder `src/firebase/functions`:
+To build and run the code locally, just run from the `src/firebase/functions` folder:
 ```
 npm run serve -- --project YOUR_FIREBASE_PROJECT_ID
 ``` 
@@ -52,6 +48,7 @@ You will see some logoutput in your terminal
 
 
 ### 6. Deployment
+To deploy the app, run the following command from the `src/firebase` folder:
 ```
 firebase deploy --only functions --project YOUR_FIREBASE_PROJECT_ID
 ```
