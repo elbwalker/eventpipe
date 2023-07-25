@@ -9,17 +9,24 @@
 
 import * as functions from "firebase-functions";
 import * as logger from "firebase-functions/logger";
-import {ElbwalkerTableRow, createBigQueryTable, insertEventIntoBigQuery, isMissingTableError} from "./bigquery";
-
+import {
+  ElbwalkerTableRow,
+  createBigQueryTable,
+  insertEventIntoBigQuery,
+  isMissingTableError,
+} from "./bigquery";
 
 export const handleEvent = functions
-  .region("europe-west3").https.onRequest(async (request, response) => {
+  .region("europe-west3")
+  .https.onRequest(async (request, response) => {
     try {
-      logger.debug("An Elbwalker event is received and being processed now", {body: request.body});
+      logger.debug("An Elbwalker event is received and being processed now", {
+        body: request.body,
+      });
 
       /**
-             * TODO: Parse request and create event to be inserted into database!
-             */
+       * TODO: Parse request and create event to be inserted into database!
+       */
       const event: ElbwalkerTableRow = {
         id: "SOME ID",
         timestamp: "SOME TIMESTAMP",
@@ -28,17 +35,19 @@ export const handleEvent = functions
       };
 
       await insertEventIntoBigQuery(event);
-      response.json({status: "ok", message: "Event processed"});
+      response.json({ status: "ok", message: "Event processed" });
     } catch (e) {
       if (isMissingTableError(e)) {
-        const message = "BigQuery table not existing yet, creating it now. Try again later!";
+        const message =
+          "BigQuery table not existing yet, creating it now. Try again later!";
         logger.warn(message);
         await createBigQueryTable();
-        response.status(500).json({status: "error", message});
+        response.status(500).json({ status: "error", message });
       } else {
-        const message = "An unexpected error happened processing an incoming request";
+        const message =
+          "An unexpected error happened processing an incoming request";
         logger.error(message, e);
-        response.status(500).json({status: "error", message});
+        response.status(500).json({ status: "error", message });
       }
     }
   });
