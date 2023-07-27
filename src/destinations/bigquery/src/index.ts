@@ -3,6 +3,11 @@ import type { DestinationBigQuery } from "./types";
 import { createDatasetAndTable, existsDatasetAndTable } from "./setup";
 
 export const destinationBigQuery: DestinationBigQuery.Function = {
+  meta: {
+    name: "BigQuery",
+    version: "0.0.7",
+  },
+
   config: {} as DestinationBigQuery.Config,
 
   async init(config) {
