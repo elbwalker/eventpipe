@@ -9,45 +9,47 @@
 
 import * as functions from "firebase-functions";
 import * as logger from "firebase-functions/logger";
-import {
-  ElbwalkerTableRow,
-  createBigQueryTable,
-  insertEventIntoBigQuery,
-  isMissingTableError,
-} from "./bigquery";
+
+import eventPipe from "@eventpipe/index";
+// @TODO build the destination and import default from dist folder
+import { destinationBigQuery } from "@eventpipe/destinations/bigquery/src";
+import { EventPipe } from "@eventpipe/types";
 
 export const handleEvent = functions
-  .region("europe-west3")
+  .region("europe-west3") // @TODO make it configurable
   .https.onRequest(async (request, response) => {
     try {
-      logger.debug("An Elbwalker event is received and being processed now", {
+      logger.debug("Received event", {
         body: request.body,
       });
 
-      /**
-       * TODO: Parse request and create event to be inserted into database!
-       */
-      const event: ElbwalkerTableRow = {
-        id: "SOME ID",
-        timestamp: "SOME TIMESTAMP",
-        body: JSON.stringify(request.body),
-        headers: JSON.stringify(request.headers),
+      const pipe = eventPipe({
+        version: "0.0.1",
+      });
+
+      pipe.addDestination("bigquery", destinationBigQuery);
+
+      const event: EventPipe.ServerEvent = request.body;
+      event.request = {
+        useragent: request.headers["user-agent"] || "unknown",
       };
 
-      await insertEventIntoBigQuery(event);
-      response.json({ status: "ok", message: "Event processed" });
-    } catch (e) {
-      if (isMissingTableError(e)) {
-        const message =
-          "BigQuery table not existing yet, creating it now. Try again later!";
-        logger.warn(message);
-        await createBigQueryTable();
-        response.status(500).json({ status: "error", message });
-      } else {
-        const message =
-          "An unexpected error happened processing an incoming request";
-        logger.error(message, e);
-        response.status(500).json({ status: "error", message });
-      }
+      const { successful, failed } = await pipe.push(event);
+      logger.debug("Push results", {
+        successful,
+        failed,
+      });
+
+      const status = failed.length
+        ? { code: 500, type: "error" }
+        : { code: 200, type: "success" };
+
+      response
+        .status(status.code)
+        .json({ status: status.type, successful, failed });
+    } catch (error) {
+      const message = "Unexpected error";
+      logger.error(message, error);
+      response.status(500).json({ status: "broken", message, e: error });
     }
   });
