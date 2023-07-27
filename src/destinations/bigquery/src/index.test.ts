@@ -1,11 +1,13 @@
-import { DestinationXXX } from "./types";
+import type { DestinationBigQuery } from "./types";
 
 describe("Destination BigQuery", () => {
-  let destination: DestinationXXX.Function, config: DestinationXXX.Config;
+  let destination: DestinationBigQuery.Function,
+    config: DestinationBigQuery.Config;
 
   const mockFn = jest.fn(); //.mockImplementation(console.log);
 
   const event = "entity action";
+  const projectId = "pr0j3ct1d";
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -16,7 +18,7 @@ describe("Destination BigQuery", () => {
 
   test("init", () => {
     config = {
-      custom: {},
+      custom: { projectId },
     };
 
     expect(destination.init).toBeDefined();

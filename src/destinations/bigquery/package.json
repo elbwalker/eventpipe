@@ -54,5 +54,8 @@
       "type": "GitHub Sponsors",
       "url": "https://github.com/sponsors/elbwalker"
     }
-  ]
+  ],
+  "dependencies": {
+    "@google-cloud/bigquery": "^6.2.1"
+  }
 }

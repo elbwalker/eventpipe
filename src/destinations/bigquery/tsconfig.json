@@ -4,11 +4,10 @@
     "module": "commonjs",
     "strict": true,
     "baseUrl": "./",
+    "outDir": "./dist",
     "paths": {
-      "@types/*": ["../../types/*"],
       "@eventpipe/*": ["../../*"]
-    },
-    "outDir": "./dist"
+    }
   },
-  "include": ["src", "../../packages/**/*"]
+  "include": ["src", "../../packages/**/*", "../../types/**/*"]
 }

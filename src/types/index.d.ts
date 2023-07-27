@@ -1,1 +1,1 @@
-type Test = true;
+export * from './destinations';

@@ -1,21 +1,48 @@
-import { log } from "@eventpipe/packages";
-import { DestinationXXX } from "./types";
-export * from "./types/index.d";
+import { BigQuery } from "@google-cloud/bigquery";
+import type { DestinationBigQuery } from "./types";
+import { createDatasetAndTable, existsDatasetAndTable } from "./setup";
 
-export const BigQuery: DestinationXXX.Function = {
-  config: {},
+export const destinationBigQuery: DestinationBigQuery.Function = {
+  config: {} as DestinationBigQuery.Config,
 
-  init(config) {
-    log("moin");
+  async init(config) {
+    const { custom } = config;
+    const { datasetId, projectId } = custom;
 
-    // Do something initializing
+    if (!datasetId) error("Config custom datasetId missing");
+    if (!projectId) error("Config custom projectId missing");
+
+    custom.client =
+      custom.client ||
+      new BigQuery({
+        // @TODO credentials
+        projectId,
+      });
 
     return true;
   },
 
-  push(event, config, mapping = {}) {
-    // Do something magical
+  async push(event, config, mapping = {}) {
+    const { client, datasetId: dataset, tableId: table } = config.custom;
+    await client
+      .dataset(dataset)
+      .table(table)
+      .insert({ event: event.event, timestamp: String(Date.now()) });
+  },
+
+  async setup(config) {
+    const { custom } = config;
+    const { datasetId, projectId } = custom;
+
+    if (!(await existsDatasetAndTable(custom.client, datasetId, projectId)))
+      await createDatasetAndTable(config.custom);
+
+    return true;
   },
 };
 
-export default BigQuery;
+function error(message: string): never {
+  throw new Error(message);
+}
+
+export default destinationBigQuery;

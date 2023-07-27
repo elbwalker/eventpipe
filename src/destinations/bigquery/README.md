@@ -8,6 +8,10 @@ More detailed information and examples can be found in the [documentation](https
 
 tbd
 
+## Setup
+
+@TODO how to trigger the setup method? This should be done manually
+
 ## Contribute
 
 Feel free to contribute by submitting an [issue](https://github.com/elbwalker/eventpipe/issues), starting a [discussion](https://github.com/elbwalker/eventpipe/discussions) or getting in [contact](https://calendly.com/elb-alexander/30min).
