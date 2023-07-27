@@ -19,10 +19,6 @@ export const handleEvent = functions
   .region('europe-west3') // @TODO make it configurable
   .https.onRequest(async (request, response) => {
     try {
-      logger.debug('Received event', {
-        body: request.body,
-      });
-
       const pipe = eventPipe({
         version: '0.0.1',
       });

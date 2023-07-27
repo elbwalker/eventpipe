@@ -4,10 +4,10 @@
     "module": "commonjs",
     "strict": true,
     "baseUrl": "./",
+    "outDir": "./dist",
     "paths": {
       "@types/*": ["types/*"]
-    },
-    "outDir": "./dist"
+    }
   },
   "include": ["src"]
 }
