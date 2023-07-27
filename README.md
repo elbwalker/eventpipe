@@ -28,3 +28,7 @@ The `destinations` directory hosts specific packages for event processing and fo
 We encourage developers, data enthusiasts, and cloud experts to contribute to EventPipe. Whether you find a bug, have an idea for improvement, or want to create a new destination or stack, your contributions are valuable. Please feel free to create issues, provide feedback, start discussions, or contribute code. Let's work together to make EventPipe even more powerful and accessible for all analytics developers.
 
 Deploying and maintaining data collection pipelines shall become an intuitive and flexible process, enabling first-party data collection with any cloud infrastructure.
+
+## Developing
+
+Install the dependencies for the `destinations`, `stacks`, `packages`, and the `core` first. Run `npm i` inside each of the folders. This whill become obsolete later with the compiled versions.

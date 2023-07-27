@@ -10,7 +10,7 @@ export namespace EventPipe {
   }
 
   interface AddDestination {
-    (id: string, destination: ServerDestination.Function): void;
+    (id: string, destination: ServerDestination.Function<any, any>): void;
   }
 
   interface Push {
