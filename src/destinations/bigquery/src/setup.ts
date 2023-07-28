@@ -1,5 +1,5 @@
-import type { TableField } from "@google-cloud/bigquery";
 import type { DestinationBigQuery } from "./types";
+import { schema } from "./schema";
 
 export const createDatasetAndTable = async function (
   custom: DestinationBigQuery.CustomConfig
@@ -15,11 +15,9 @@ export const createDatasetAndTable = async function (
   }
 
   try {
-    const options = {
-      schema: tableSchema,
-      location,
-    };
-    await client.dataset(datasetId).createTable(tableId, options);
+    if (location) schema.location = location;
+
+    await client.dataset(datasetId).createTable(tableId, schema);
   } catch (e) {
     if (!(e as Error).message.includes("Already Exists")) {
       throw e;
@@ -44,16 +42,3 @@ export const existsDatasetAndTable = async function (
     return false;
   }
 };
-
-const tableSchema: TableField[] = [
-  {
-    name: "event",
-    type: "STRING",
-    description: "Event name",
-  },
-  {
-    name: "timestamp",
-    type: "STRING",
-    description: "Time stamp at the beginning of a session",
-  },
-];

@@ -5,7 +5,7 @@ import { join } from "path";
 describe("Destination BigQuery", () => {
   const mockFn = jest.fn(); //.mockImplementation(console.log);
 
-  const projectId = "pr0j3ct1d";
+  const projectId = "eventpipe-f9979"; //@TODO change to pr0j3ct1d
   const location = "EU";
   const datasetId = "d4t4s3t1d";
   const tableId = "t4bl31d";
@@ -42,16 +42,8 @@ describe("Destination BigQuery", () => {
 
     await expect(destination.setup({} as any)).rejects.toThrowError();
 
-    expect(
-      await destination.setup({
-        custom: {
-          projectId: "eventpipe-f9979",
-          bigquery: {
-            credentials,
-          },
-        },
-      })
-    ).toBeTruthy();
+    config.custom.bigquery = { credentials };
+    expect(await destination.setup(config)).toBeTruthy();
   });
 
   test("init", async () => {

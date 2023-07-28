@@ -62,8 +62,6 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
       log("Dataset and table created");
       return true;
     }
-
-    return true;
   },
 };
 
