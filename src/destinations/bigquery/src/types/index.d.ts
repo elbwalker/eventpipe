@@ -6,6 +6,7 @@ export declare namespace DestinationBigQuery {
     extends ServerDestination.Function<CustomConfig, CustomEventConfig> {}
 
   type Config = ServerDestination.Config<CustomConfig, CustomEventConfig>;
+  type PartialConfig = ServerDestination.Config<Partial<CustomConfig>, Partial<CustomEventConfig>>;
 
   interface CustomConfig {
     client: BigQuery;

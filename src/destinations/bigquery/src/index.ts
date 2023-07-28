@@ -12,10 +12,12 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
 
   async init(config) {
     const { custom } = config;
-    const { datasetId, projectId } = custom;
+    if (!custom) error("Config custom missing");
 
+    const { datasetId, projectId, tableId } = custom;
     if (!datasetId) error("Config custom datasetId missing");
     if (!projectId) error("Config custom projectId missing");
+    if (!tableId) error("Config custom tableId missing");
 
     custom.client =
       custom.client ||

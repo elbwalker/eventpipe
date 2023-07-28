@@ -3,7 +3,7 @@ import { EventPipe } from "./eventpipe";
 
 export namespace ServerDestination {
   interface Function<Custom = unknown, EventCustom = unknown> {
-    init?: (config: Config<Custom, Partial<EventCustom>>) => Promise<boolean>;
+    init?: (config: Config<Partial<Custom>, Partial<EventCustom>>) => Promise<boolean>;
     setup?: (config: Config<Custom, EventCustom>) => Promise<boolean>;
     push: (
       event: EventPipe.ServerEvent,

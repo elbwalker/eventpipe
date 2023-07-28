@@ -2,12 +2,13 @@ import type { DestinationBigQuery } from "./types";
 
 describe("Destination BigQuery", () => {
   let destination: DestinationBigQuery.Function,
-    config: DestinationBigQuery.Config;
+    config: DestinationBigQuery.PartialConfig;
 
   const mockFn = jest.fn(); //.mockImplementation(console.log);
 
-  const event = "entity action";
   const projectId = "pr0j3ct1d";
+  const datasetId = "d4t4s3t1d";
+  const tableId = "t4bl31d";
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -16,19 +17,32 @@ describe("Destination BigQuery", () => {
     destination = require(".").default;
   });
 
-  test("init", () => {
+  test("init", async () => {
     config = {
-      custom: { projectId },
+      custom: { projectId, datasetId, tableId },
     };
 
     expect(destination.init).toBeDefined();
     if (!destination.init) return;
 
-    destination.init(config);
-    expect(true).toBeTruthy();
+    await expect(destination.init({} as any)).rejects.toThrow(
+      "Config custom missing"
+    );
+
+    await expect(
+      destination.init({ custom: { datasetId, tableId } } as any)
+    ).rejects.toThrow("Config custom projectId missing");
+
+    await expect(
+      destination.init({ custom: { projectId, tableId } } as any)
+    ).rejects.toThrow("Config custom datasetId missing");
+
+    await expect(
+      destination.init({ custom: { projectId, datasetId } } as any)
+    ).rejects.toThrow("Config custom tableId missing");
   });
 
-  test("push", () => {
+  test("push", async () => {
     // expect(mockFn).toHaveBeenNthCalledWith(1, event);
   });
 });
