@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node ./esbuild.mjs",
     "postbuild": "tsc && copyfiles -u 1 src/types/*.d.ts dist",
-    "dev": "jest --watchAll --colors",
+    "dev": "jest --watchAll --colors --detectOpenHandles ",
     "publish": "npm i && npm run test && npm run build && npm publish --access public",
     "test": "jest --colors --coverage"
   },

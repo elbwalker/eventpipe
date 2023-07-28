@@ -4,6 +4,7 @@ describe("Destination BigQuery", () => {
   const mockFn = jest.fn(); //.mockImplementation(console.log);
 
   const projectId = "pr0j3ct1d";
+  const location = "EU";
   const datasetId = "d4t4s3t1d";
   const tableId = "t4bl31d";
 
@@ -18,6 +19,7 @@ describe("Destination BigQuery", () => {
     config = {
       custom: {
         projectId,
+        location,
         datasetId,
         tableId,
       },
@@ -30,7 +32,9 @@ describe("Destination BigQuery", () => {
 
     await expect(destination.setup({} as any)).rejects.toThrowError();
 
-    await destination.setup({ custom: { projectId: "eventpipe-f9979" } });
+    expect(
+      await destination.setup({ custom: { projectId: "eventpipe-f9979" } })
+    ).toBeTruthy();
   });
 
   test("init", async () => {

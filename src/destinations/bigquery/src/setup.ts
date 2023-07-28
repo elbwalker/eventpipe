@@ -4,10 +4,10 @@ import type { DestinationBigQuery } from "./types";
 export const createDatasetAndTable = async function (
   custom: DestinationBigQuery.CustomConfig
 ) {
-  const { client, datasetId: dataset, location, tableId: table } = custom;
+  const { client, datasetId, location, tableId } = custom;
 
   try {
-    await client.createDataset(dataset, { location: "EU" });
+    await client.createDataset(datasetId, { location });
   } catch (e) {
     if (!(e as Error).message.includes("Already Exists")) {
       throw e;
@@ -17,21 +17,23 @@ export const createDatasetAndTable = async function (
   try {
     const options = {
       schema: tableSchema,
-      location: location || "EU",
+      location,
     };
-    await client.dataset(dataset).createTable(table, options);
+    await client.dataset(datasetId).createTable(tableId, options);
   } catch (e) {
     if (!(e as Error).message.includes("Already Exists")) {
       throw e;
     }
   }
+
+  return true;
 };
 
 export const existsDatasetAndTable = async function (
-  client: BigQuery,
-  datasetId: string,
-  tableId: string
+  custom: DestinationBigQuery.CustomConfig
 ): Promise<boolean> {
+  const { client, datasetId, tableId } = custom;
+
   const dataset = client.dataset(datasetId);
 
   try {

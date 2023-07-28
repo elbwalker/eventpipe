@@ -14,8 +14,9 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
     const { custom } = config;
     if (!custom) error("Config custom missing");
 
-    let { client, projectId, datasetId, tableId } = custom;
+    let { client, projectId, location, datasetId, tableId } = custom;
     if (!projectId) error("Config custom projectId missing");
+    location = location || "EU";
     datasetId = datasetId || "eventpipe";
     tableId = tableId || "events";
 
@@ -30,6 +31,7 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
       custom: {
         client,
         projectId,
+        location,
         datasetId,
         tableId,
       },
@@ -49,13 +51,12 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
   async setup(config) {
     if (!(await this.init!(config))) error("Init error");
 
-    const { custom } = config as DestinationBigQuery.Config;
-    if (!custom) error("Config custom missing");
+    // Load the updated config
+    const { custom } = this.config;
 
-    const { client, datasetId, projectId } = custom;
-
-    if (!(await existsDatasetAndTable(client, projectId, datasetId)))
+    if (!(await existsDatasetAndTable(custom))) {
       await createDatasetAndTable(custom);
+    }
 
     return true;
   },
