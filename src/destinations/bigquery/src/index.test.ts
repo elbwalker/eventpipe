@@ -1,3 +1,4 @@
+import type { EventPipe } from "@eventpipe/types";
 import type { DestinationBigQuery } from "./types";
 import { readFileSync } from "fs";
 import { join } from "path";
@@ -36,13 +37,13 @@ describe("Destination BigQuery", () => {
     };
   });
 
-  test("setup", async () => {
+  test.only("setup", async () => {
     expect(destination.setup).toBeDefined();
     if (!destination.setup) return;
 
     await expect(destination.setup({} as any)).rejects.toThrowError();
 
-    config.custom.bigquery = { credentials };
+    config.custom = { projectId, bigquery: { credentials } };
     expect(await destination.setup(config)).toBeTruthy();
   });
 
@@ -68,7 +69,47 @@ describe("Destination BigQuery", () => {
     expect(destination.config.custom.tableId).toBe("events");
   });
 
-  test("push", async () => {
-    // expect(mockFn).toHaveBeenNthCalledWith(1, event);
+  test.only("push", async () => {
+    const event: EventPipe.ServerEvent = {
+      event: "entity action",
+      data: { foo: "bar" },
+      context: { dev: ["test", 1] },
+      globals: { lang: "ts" },
+      user: { id: "us3r", device: "c00k13", session: "s3ss10n" },
+      nested: [
+        {
+          type: "child",
+          data: { type: "nested" },
+          nested: [],
+          context: { element: ["child", 0] },
+        },
+      ],
+      consent: { debugging: true },
+      id: "1-gr0up-1",
+      trigger: "test",
+      entity: "entity",
+      action: "action",
+      timestamp: 1690561989523,
+      timing: 3.14,
+      group: "gr0up",
+      count: 1,
+      version: {
+        eventpipe: "0.0.7",
+        config: "1.2.4",
+      },
+      source: {
+        type: "jest",
+        id: "https://localhost:80",
+        previous_id: "http://remotehost:9001",
+      },
+      request: {
+        useragent: "jest",
+      },
+    };
+
+    config.custom = { projectId, bigquery: { credentials } };
+    await destination.init!(config);
+
+    await destination.push(event, destination.config);
   });
 });

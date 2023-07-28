@@ -34,7 +34,19 @@ export namespace EventPipe {
     request: Request;
   }
 
-  type WebEvent = IElbwalker.Event;
+  // @TODO fix until type update in elbwalker/walker.js
+  interface WebEvent extends Omit<Omit<IElbwalker.Event, "source">, "version"> {
+    version: {
+      eventpipe: string;
+      config: string;
+    };
+    source: {
+      type: string;
+      id: string;
+      previous_id: string;
+    };
+  }
+  // type WebEvent = { source: { type: string } } & IElbwalker.Event;
 
   interface Request {
     useragent: string;

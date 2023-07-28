@@ -157,7 +157,6 @@ export const schema: TableMetadata = {
     {
       name: "additional_data",
       type: "JSON",
-      mode: "NULLABLE",
       description:
         "Optionally captured but relevant event information in addition",
     },

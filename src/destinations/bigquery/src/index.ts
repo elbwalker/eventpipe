@@ -40,11 +40,28 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
   },
 
   async push(event, config, mapping = {}) {
-    const { client, datasetId: dataset, tableId: table } = config.custom;
-    await client
-      .dataset(dataset)
-      .table(table)
-      .insert({ event: event.event, timestamp: String(Date.now()) });
+    const { client, datasetId, tableId } = this.config.custom;
+
+    // @TODO update type and make this more beautiful
+    const destinationEvent = {
+      ...event,
+      data: JSON.stringify(event.data),
+      context: JSON.stringify(event.context),
+      globals: JSON.stringify(event.globals),
+      nested: JSON.stringify(event.nested),
+      consent: JSON.stringify(event.consent),
+
+      timestamp: new Date(event.timestamp),
+      server_timestamp: new Date(),
+    };
+    delete (destinationEvent as any).request;
+
+    try {
+      await client.dataset(datasetId).table(tableId).insert(destinationEvent);
+    } catch (e) {
+      log(e as string); // @TODO not good
+      error("Error inserting event");
+    }
   },
 
   async setup(config) {
