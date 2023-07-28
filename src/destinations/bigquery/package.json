@@ -1,0 +1,61 @@
+{
+  "name": "@elbwalker/destination-server-bigquery",
+  "version": "0.0.7",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist",
+  "scripts": {
+    "build": "node ./esbuild.mjs",
+    "postbuild": "tsc && copyfiles -u 1 src/types/*.d.ts dist",
+    "dev": "jest --watchAll --colors",
+    "publish": "npm i && npm run test && npm run build && npm publish --access public",
+    "test": "jest --colors --coverage"
+  },
+  "author": "elbwalker <hello@elbwalker.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elbwalker/eventpipe",
+    "directory": "src/destinations/bigquery"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.mjs",
+    "dist/**/*.d.ts"
+  ],
+  "peerDependencies": {
+    "@elbwalker/walker.js": "^1.6.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.6",
+    "copyfiles": "^2.4.1",
+    "esbuild": "^0.17.4",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.5",
+    "typescript": "^4.9.4"
+  },
+  "bugs": {
+    "url": "https://github.com/elbwalker/eventpipe/issues"
+  },
+  "homepage": "https://github.com/elbwalker/eventpipe#readme",
+  "keywords": [
+    "elb",
+    "elbwalker",
+    "walker",
+    "walkerjs",
+    "walker destination",
+    "server side",
+    "analytics",
+    "tracking",
+    "bigquery"
+  ],
+  "funding": [
+    {
+      "type": "GitHub Sponsors",
+      "url": "https://github.com/sponsors/elbwalker"
+    }
+  ],
+  "dependencies": {
+    "@google-cloud/bigquery": "^6.2.1"
+  }
+}

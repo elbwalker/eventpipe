@@ -1,0 +1,38 @@
+{
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc && tsc-alias",
+    "build:watch": "concurrently \"tsc -w\" \"tsc-alias -w\"",
+    "serve": "concurrently --kill-others \"firebase emulators:start --only functions\" \"npm run build:watch\"",
+    "aserve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "dist/stacks/firebase/functions/src/index.js",
+  "dependencies": {
+    "@google-cloud/bigquery": "^6.2.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.9.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^5.0.0",
+    "firebase-functions-test": "^3.1.0",
+    "prettier": "^3.0.0",
+    "tsc-alias": "^1.8.7",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}

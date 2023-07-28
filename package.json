@@ -1,0 +1,25 @@
+{
+  "name": "@elbwalker/eventpipe",
+  "version": "0.0.7",
+  "description": "First-party data collection",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "@elbwalker/eventpipe"
+  },
+  "keywords": [
+    "first-party",
+    "data",
+    "collection",
+    "server-side",
+    "analytics"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@elbwalker/walker.js": "^1.6.4"
+  }
+}
