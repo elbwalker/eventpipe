@@ -1,4 +1,5 @@
 import { BigQuery } from "@google-cloud/bigquery";
+import type { BigQueryOptions } from "@google-cloud/bigquery";
 import type { DestinationBigQuery } from "./types";
 import { createDatasetAndTable, existsDatasetAndTable } from "./setup";
 
@@ -14,18 +15,16 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
     const { custom } = config;
     if (!custom) error("Config custom missing");
 
-    let { client, projectId, location, datasetId, tableId } = custom;
+    let { client, projectId, location, datasetId, tableId, bigquery } = custom;
     if (!projectId) error("Config custom projectId missing");
     location = location || "EU";
     datasetId = datasetId || "eventpipe";
     tableId = tableId || "events";
 
-    client =
-      client ||
-      new BigQuery({
-        // @TODO credentials
-        projectId,
-      });
+    const options: BigQueryOptions = bigquery || {};
+    if (projectId) options.projectId = projectId;
+
+    client = client || new BigQuery(options);
 
     this.config = {
       custom: {
@@ -54,8 +53,14 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
     // Load the updated config
     const { custom } = this.config;
 
-    if (!(await existsDatasetAndTable(custom))) {
+    if (await existsDatasetAndTable(custom)) {
+      log("Dataset and table already exists");
+      return true;
+    } else {
+      log("Creating dataset and/or table");
       await createDatasetAndTable(custom);
+      log("Dataset and table created");
+      return true;
     }
 
     return true;
@@ -64,6 +69,10 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
 
 function error(message: string): never {
   throw new Error(message);
+}
+
+function log(message: string): void {
+  console.log(message);
 }
 
 export default destinationBigQuery;

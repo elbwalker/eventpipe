@@ -1,4 +1,6 @@
 import type { DestinationBigQuery } from "./types";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 describe("Destination BigQuery", () => {
   const mockFn = jest.fn(); //.mockImplementation(console.log);
@@ -10,6 +12,14 @@ describe("Destination BigQuery", () => {
 
   let destination: DestinationBigQuery.Function,
     config: DestinationBigQuery.PartialConfig;
+
+  // @TODO find another solution
+  let credentials: any; // @TODO
+  try {
+    credentials = JSON.parse(
+      readFileSync(join(__dirname, "service_account.json"), "utf-8")
+    );
+  } catch (error) {}
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -26,14 +36,21 @@ describe("Destination BigQuery", () => {
     };
   });
 
-  test.skip("setup", async () => {
+  test("setup", async () => {
     expect(destination.setup).toBeDefined();
     if (!destination.setup) return;
 
     await expect(destination.setup({} as any)).rejects.toThrowError();
 
     expect(
-      await destination.setup({ custom: { projectId: "eventpipe-f9979" } })
+      await destination.setup({
+        custom: {
+          projectId: "eventpipe-f9979",
+          bigquery: {
+            credentials,
+          },
+        },
+      })
     ).toBeTruthy();
   });
 

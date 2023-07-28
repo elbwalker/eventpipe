@@ -1,4 +1,4 @@
-import type { BigQuery, TableField } from "@google-cloud/bigquery";
+import type { TableField } from "@google-cloud/bigquery";
 import type { DestinationBigQuery } from "./types";
 
 export const createDatasetAndTable = async function (
