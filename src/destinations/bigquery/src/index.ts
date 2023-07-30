@@ -17,6 +17,7 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
 
     let { client, projectId, location, datasetId, tableId, bigquery } = custom;
     if (!projectId) error("Config custom projectId missing");
+
     location = location || "EU";
     datasetId = datasetId || "eventpipe";
     tableId = tableId || "events";
@@ -40,21 +41,33 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
   },
 
   async push(event, config, mapping = {}) {
-    const { client, datasetId, tableId } = this.config.custom;
+    const { client, datasetId, tableId } = config.custom;
 
-    // @TODO update type and make this more beautiful
-    const destinationEvent = {
-      ...event,
-      data: JSON.stringify(event.data),
-      context: JSON.stringify(event.context),
-      globals: JSON.stringify(event.globals),
-      nested: JSON.stringify(event.nested),
+    // Required properties
+    const destinationEvent: DestinationBigQuery.Row = {
+      event: event.event,
       consent: JSON.stringify(event.consent),
-
+      id: event.id,
+      entity: event.entity,
+      action: event.action,
       timestamp: new Date(event.timestamp),
       server_timestamp: new Date(),
     };
-    delete (destinationEvent as any).request;
+
+    // Optional properties
+    if (event.data) destinationEvent.data = JSON.stringify(event.data);
+    if (event.context) destinationEvent.context = JSON.stringify(event.context);
+    if (event.globals) destinationEvent.globals = JSON.stringify(event.globals);
+    if (event.user) destinationEvent.user = event.user;
+    if (event.nested) destinationEvent.nested = JSON.stringify(event.nested);
+    if (event.trigger) destinationEvent.trigger = event.trigger;
+    if (event.timing) destinationEvent.timing = event.timing;
+    if (event.group) destinationEvent.group = event.group;
+    if (event.count) destinationEvent.count = event.count;
+    if (event.version) destinationEvent.version = event.version;
+    if (event.source) destinationEvent.source = event.source;
+    if (event.additional_data)
+      destinationEvent.additional_data = JSON.stringify(event.additional_data);
 
     try {
       await client.dataset(datasetId).table(tableId).insert(destinationEvent);
@@ -87,7 +100,7 @@ function error(message: string): never {
 }
 
 function log(message: string): void {
-  console.log(message);
+  console.dir(message, { depth: 4 });
 }
 
 export default destinationBigQuery;

@@ -27,14 +27,14 @@ export declare namespace DestinationBigQuery {
     // Custom destination event mapping properties
   }
 
-  interface Event {
+  interface Row {
     event: string;
-    data?: Walker.Properties;
-    context?: Walker.OrderedProperties;
-    globals?: Walker.Properties;
+    data?: string;
+    context?: string;
+    globals?: string;
     user?: IElbwalker.User;
-    nested?: Walker.Entities;
-    consent: IElbwalker.Consent;
+    nested?: string;
+    consent: string;
     id: string;
     trigger?: string;
     entity: string;
@@ -44,8 +44,8 @@ export declare namespace DestinationBigQuery {
     group?: string;
     count?: number;
     version?: {
-      eventpipe?: string;
-      config?: string;
+      client?: string;
+      server?: string;
     };
     source?: {
       type?: string;
@@ -53,6 +53,6 @@ export declare namespace DestinationBigQuery {
       previous_id?: string;
     };
     server_timestamp: Date;
-    additional_data?: Walker.Properties;
+    additional_data?: string;
   }
 }

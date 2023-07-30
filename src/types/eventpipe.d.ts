@@ -1,5 +1,5 @@
-import { IElbwalker } from "@elbwalker/walker.js";
-import { ServerDestination } from "./destinations";
+import type { IElbwalker, Walker } from "@elbwalker/walker.js";
+import type { ServerDestination } from "./destinations";
 
 export namespace EventPipe {
   interface Function {
@@ -31,14 +31,14 @@ export namespace EventPipe {
   }
 
   interface ServerEvent extends WebEvent {
-    request: Request;
+    additional_data: AdditionalData;
   }
 
   // @TODO fix until type update in elbwalker/walker.js
   interface WebEvent extends Omit<Omit<IElbwalker.Event, "source">, "version"> {
     version: {
-      eventpipe: string;
-      config: string;
+      client: string;
+      server: string;
     };
     source: {
       type: string;
@@ -46,9 +46,6 @@ export namespace EventPipe {
       previous_id: string;
     };
   }
-  // type WebEvent = { source: { type: string } } & IElbwalker.Event;
 
-  interface Request {
-    useragent: string;
-  }
+  interface AdditionalData extends Walker.Properties {}
 }

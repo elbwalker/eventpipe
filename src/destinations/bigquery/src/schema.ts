@@ -115,14 +115,14 @@ export const schema: TableMetadata = {
       description: "Helpful when working with raw data",
       fields: [
         {
-          name: "eventpipe",
+          name: "client",
           type: "STRING",
-          description: "Used eventpipe version",
+          description: "Version of the client configuration",
         },
         {
-          name: "config",
+          name: "server",
           type: "STRING",
-          description: "A custom configuration version number",
+          description: "Version of the server configuration",
         },
       ],
     },

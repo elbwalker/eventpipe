@@ -37,7 +37,7 @@ describe("Destination BigQuery", () => {
     };
   });
 
-  test.only("setup", async () => {
+  test("setup", async () => {
     expect(destination.setup).toBeDefined();
     if (!destination.setup) return;
 
@@ -69,7 +69,7 @@ describe("Destination BigQuery", () => {
     expect(destination.config.custom.tableId).toBe("events");
   });
 
-  test.only("push", async () => {
+  test("push", async () => {
     const event: EventPipe.ServerEvent = {
       event: "entity action",
       data: { foo: "bar" },
@@ -94,15 +94,15 @@ describe("Destination BigQuery", () => {
       group: "gr0up",
       count: 1,
       version: {
-        eventpipe: "0.0.7",
-        config: "1.2.4",
+        client: "0.0.7",
+        server: "1.2.4",
       },
       source: {
         type: "jest",
         id: "https://localhost:80",
         previous_id: "http://remotehost:9001",
       },
-      request: {
+      additional_data: {
         useragent: "jest",
       },
     };
