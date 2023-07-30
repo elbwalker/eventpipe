@@ -8,9 +8,10 @@
     "strict": true,
     "target": "es2017",
     "paths": {
-      "@eventpipe/*": ["../../../*"]
+      "@eventpipe/*": ["../../../src/*"],
+      "@destinations/*": ["../../../destinations/*"],
     }
   },
   "compileOnSave": true,
-  "include": ["src", "../../../packages/**/*", "../../../types/**/*"]
+  "include": ["src", "../../../src/**/*", "../../../destinations/**/*"]
 }

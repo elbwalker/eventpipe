@@ -6,8 +6,8 @@
     "baseUrl": "./",
     "outDir": "./dist",
     "paths": {
-      "@eventpipe/*": ["../../*"]
+      "@eventpipe/*": ["../../src/*"]
     }
   },
-  "include": ["src", "../../packages/**/*", "../../types/**/*"]
+  "include": ["src", "../../src/packages/**/*", "../../src/types/**/*"]
 }

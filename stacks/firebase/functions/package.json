@@ -4,8 +4,7 @@
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc && tsc-alias",
     "build:watch": "concurrently \"tsc -w\" \"tsc-alias -w\"",
-    "serve": "concurrently --kill-others \"firebase emulators:start --only functions\" \"npm run build:watch\"",
-    "aserve": "npm run build && firebase emulators:start --only functions",
+    "dev": "concurrently --kill-others \"firebase emulators:start --only functions\" \"npm run build:watch\"",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
@@ -33,6 +32,5 @@
     "prettier": "^3.0.0",
     "tsc-alias": "^1.8.7",
     "typescript": "^4.9.0"
-  },
-  "private": true
+  }
 }

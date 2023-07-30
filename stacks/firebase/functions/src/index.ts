@@ -12,7 +12,7 @@ import * as logger from 'firebase-functions/logger';
 
 import eventPipe from '@eventpipe/index';
 // @TODO build the destination and import default from dist folder
-import { destinationBigQuery } from '@eventpipe/destinations/bigquery/src';
+import { destinationBigQuery } from '@destinations/bigquery/src';
 import { EventPipe } from '@eventpipe/types';
 
 export const handleEvent = functions

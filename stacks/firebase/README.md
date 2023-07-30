@@ -46,7 +46,7 @@ firebase use YOU_PROJECT_ID
 To build and run the code locally, just run from the `src/firebase/functions` folder:
 
 ```
-npm run serve
+npm run dev
 ```
 
 In the console you will find the enpoint URL, e.g. `http://127.0.0.1:5001/YOUR_PROJECT_ID/YOUR_REGION/handleEvent`. You can then send an event to your local API with:
