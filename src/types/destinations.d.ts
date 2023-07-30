@@ -3,13 +3,17 @@ import { EventPipe } from "./eventpipe";
 
 export namespace ServerDestination {
   interface Function<Custom = unknown, EventCustom = unknown> {
-    init?: (config: Config<Custom, Partial<EventCustom>>) => Promise<boolean>;
-    setup?: (config: Config<Custom, EventCustom>) => Promise<boolean>;
+    init?: (
+      config: Partial<Config<Partial<Custom>, Partial<EventCustom>>>
+    ) => Promise<boolean>;
+    setup?: (
+      config: Partial<Config<Partial<Custom>, Partial<EventCustom>>>
+    ) => Promise<boolean>;
     push: (
-      event: EventPipe.ServerEvent,
+      event: EventPipe.ServerEvent, // @TODO always as array for batching?
       config: Config<Custom, EventCustom>,
       mapping?: EventConfig<EventCustom>
-    ) => Promise<void>;
+    ) => Promise<void>; // @TODO return failed events
     config: Config<Custom, EventCustom>;
     meta: Meta;
     queue?: Array<IElbwalker.Event>; // Non processed events yet and resettet with each new run

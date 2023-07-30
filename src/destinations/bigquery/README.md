@@ -8,6 +8,38 @@ More detailed information and examples can be found in the [documentation](https
 
 tbd
 
+### Configuration
+
+```ts
+interface CustomConfig {
+  client: BigQuery;
+  projectId: string;
+  datasetId: string;
+  tableId: string;
+  location?: string;
+  bigquery?: BigQueryOptions;
+}
+```
+
+For further details on the `bigquery` option (especially authentication) see [Interface BigQueryOptions](https://cloud.google.com/nodejs/docs/reference/bigquery/latest/bigquery/bigqueryoptions)
+
+#### Example authentication with credentials
+
+Create a [service account](https://cloud.google.com/iam/docs/service-account-overview) with BigQuery permissions and download the keyfile
+
+```js
+{
+  custom: {
+    bigquery: {
+      credentials: {
+        private_key: '"-----BEGIN PRIVATE KEY-----\nMIIEv...';
+        client_email: "bigquery@PROJECT_ID.iam...";
+      }
+    }
+  }
+}
+```
+
 ## Setup
 
 @TODO how to trigger the setup method? This should be done manually
