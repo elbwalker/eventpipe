@@ -1,6 +1,6 @@
-import { BigQuery } from "@google-cloud/bigquery";
 import type { BigQueryOptions } from "@google-cloud/bigquery";
 import type { DestinationBigQuery } from "./types";
+import { BigQuery } from "@google-cloud/bigquery";
 import { createDatasetAndTable, existsDatasetAndTable } from "./setup";
 
 export const destinationBigQuery: DestinationBigQuery.Function = {
@@ -41,7 +41,8 @@ export const destinationBigQuery: DestinationBigQuery.Function = {
   },
 
   async push(event, config, mapping = {}) {
-    const { client, datasetId, tableId } = config.custom;
+    const custom = config ? config.custom : this.config.custom;
+    const { client, datasetId, tableId } = custom || custom;
 
     // Required properties
     const destinationEvent: DestinationBigQuery.Row = {

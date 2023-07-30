@@ -11,7 +11,7 @@ export namespace ServerDestination {
     ) => Promise<boolean>;
     push: (
       event: EventPipe.ServerEvent, // @TODO always as array for batching?
-      config: Config<Custom, EventCustom>,
+      config?: Config<Custom, EventCustom>,
       mapping?: EventConfig<EventCustom>
     ) => Promise<void>; // @TODO return failed events
     config: Config<Custom, EventCustom>;

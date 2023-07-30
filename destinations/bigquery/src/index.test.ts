@@ -110,6 +110,6 @@ describe("Destination BigQuery", () => {
     config.custom = { projectId, bigquery: { credentials } };
     await destination.init!(config);
 
-    await destination.push(event, destination.config);
+    await destination.push(event);
   });
 });

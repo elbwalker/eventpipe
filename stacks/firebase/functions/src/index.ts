@@ -26,7 +26,7 @@ export const handleEvent = functions
       pipe.addDestination('bigquery', destinationBigQuery);
 
       const event: EventPipe.ServerEvent = request.body;
-      event.request = {
+      event.additional_data = {
         useragent: request.headers['user-agent'] || 'unknown',
       };
 
